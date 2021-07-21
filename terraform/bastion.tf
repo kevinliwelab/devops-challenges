@@ -43,16 +43,16 @@ module "key_pair" {
 }
 
 module "bastion_instance" {
-  source                 = "terraform-aws-modules/ec2-instance/aws"
-  version                = "~> 2.0"
-  name                   = "devops-challenge-bastion-node"
-  instance_count         = 1
-  ami                    = data.aws_ami.amazon-linux-2.id
-  instance_type          = "t3.micro"
-  key_name               = var.key_name
-  monitoring             = false
-  vpc_security_group_ids = [aws_security_group.devops-challenge-bastion-sg.id]
-  subnet_id              = module.vpc.public_subnets[0]
+  source                      = "terraform-aws-modules/ec2-instance/aws"
+  version                     = "~> 2.0"
+  name                        = "devops-challenge-bastion-node"
+  instance_count              = 1
+  ami                         = data.aws_ami.amazon-linux-2.id
+  instance_type               = "t3.micro"
+  key_name                    = var.key_name
+  monitoring                  = false
+  vpc_security_group_ids      = [aws_security_group.devops-challenge-bastion-sg.id]
+  subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   tags = {
     usage = "ssh agent forwarding"
