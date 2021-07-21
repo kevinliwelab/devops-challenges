@@ -29,7 +29,7 @@ module "nlb" {
       }
       targets = [
         {
-          target_id = "${module.bastion_instance.id}"
+          target_id = module.bastion_instance.id[0]
           port = 80
         }
       ]
@@ -41,7 +41,7 @@ module "nlb" {
       target_type      = "ip"
       targets = [
         {
-          target_id = "${module.vm_instance.id}"
+          target_id = module.vm_instance.id[0]
           port = 9090
         }
       ]

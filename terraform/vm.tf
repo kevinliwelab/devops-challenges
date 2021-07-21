@@ -6,14 +6,14 @@ resource "aws_security_group" "devops-challenge-vm-sg" {
     protocol    = "tcp"
     from_port   = 22
     to_port     = 22
-    cidr_blocks = ["${module.bastion_instance.private_ip}/32"]
+    cidr_blocks = ["${module.bastion_instance.private_ip[0]}/32"]
   }
 
   ingress {
     protocol    = "tcp"
     from_port   = 80
     to_port     = 80
-    cidr_blocks = ["${module.vpc.private_subnets[0]}", "${module.vpc.private_subnets[1]}", "${module.vpc.private_subnets[2]}"]
+    cidr_blocks = [module.vpc.private_subnets[0], module.vpc.private_subnets[1], module.vpc.private_subnets[2]]
   }
 
   egress {

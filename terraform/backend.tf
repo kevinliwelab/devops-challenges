@@ -1,4 +1,3 @@
-# Backend configuration is loaded early so we can't use variables
 resource "aws_dynamodb_table" "terraform_state_lock" {
   name = "terraform-lock"
   read_capacity = 5
@@ -10,6 +9,7 @@ resource "aws_dynamodb_table" "terraform_state_lock" {
   }
 }
 
+# Backend configuration is loaded early so we can't use variables
 terraform {
   required_version = ">= 0.12.6"
 
@@ -18,8 +18,8 @@ terraform {
   }
   
   backend "s3" {
-    region  = var.aws_region
-    bucket  = "devops-challenge-terraform-state"
+    region  = "ap-southeast-1"
+    bucket  = "devops-challenges-terraform-state"
     key     = "terraform.tfstate"
     encrypt = true
     dynamodb_table = "terraform-lock"
