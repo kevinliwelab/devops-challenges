@@ -24,6 +24,15 @@ resource "aws_security_group" "devops-challenge-vm-sg" {
   }
 }
 
+resource "aws_kms_key" "this" {
+  description               = "for encryption of nginx vm ebs volume"
+  deletion_window_in_days   = 30
+  key_usage                 = "ENCRYPT_DECRYPT"
+  customer_master_key_spec  = "SYMMETRIC_DEFAULT"
+  is_enabled                = true
+  enable_key_rotation       = true
+}
+
 module "vm_instance" {
   source                      = "terraform-aws-modules/ec2-instance/aws"
   version                     = "~> 2.0"
@@ -36,6 +45,13 @@ module "vm_instance" {
   vpc_security_group_ids      = [aws_security_group.devops-challenge-vm-sg.id]
   subnet_id                   = module.vpc.private_subnets[0]
   associate_public_ip_address = true
+  root_block_device           = [{
+    delete_on_termination     = true
+    encrypted                 = true
+    kms_key_id                = aws_kms_key.this.arn
+    volume_size               = 10
+    volume_type               = "gp3"
+  }]
   tags = {
     usage = "hosting nginx and prometheus container"
   }

@@ -32,15 +32,15 @@ resource "aws_security_group" "devops-challenge-bastion-sg" {
   }
 }
 
-resource "tls_private_key" "devops" {
+resource "tls_private_key" "this" {
   algorithm = "RSA"
 }
 
 module "key_pair" {
   source = "terraform-aws-modules/key-pair/aws"
 
-  key_name   = "devops-challenge"
-  public_key = tls_private_key.devops.public_key_openssh
+  key_name   = var.key_name
+  public_key = tls_private_key.this.public_key_openssh
 }
 
 module "bastion_instance" {
