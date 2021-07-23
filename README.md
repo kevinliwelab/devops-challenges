@@ -14,7 +14,7 @@ Create s3 bucket in your region, with the name defined in terraform/backend.tf
 $ aws s3api create-bucket --bukect BUCKET --region REGION
 ```
 
-Run below commands to initialize the terraform and check what resources are going to be created in aws
+Run below commands to initialize the terraform and check what resources are going to be created in AWS   
 Run terraform commands with not requiring lock due to it's the first time plan/apply, DynamoDB talbe has not been provisioned yet
 ```sh
 $ terraform init
@@ -23,9 +23,9 @@ $ terraform plan -lock=false
 $ terraform apply -lock=false
 ```
 
-Configure SSH agent forwarding via bastion node to VM instance in private subnet
-PEM key can be found in terraform state file in S3 bucket
-Bastion node public IP and VM instance private IP will be in terraform output
+Configure SSH agent forwarding via bastion node to VM instance in private subnet   
+PEM key can be found in terraform state file in S3 bucket   
+Bastion node public IP and VM instance private IP will be in terraform output   
 ```sh
 $ ssh-add -k <PEM_FILE_NAME>
 $ ssh-add -L
