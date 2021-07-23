@@ -15,6 +15,7 @@ $ aws s3api create-bucket --bukect BUCKET --region REGION
 ```
 
 Run below commands to initialize the terraform and check what resources are going to be created in AWS   
+
 Run terraform commands with not requiring lock due to it's the first time plan/apply, DynamoDB talbe has not been provisioned yet
 ```sh
 $ terraform init
@@ -24,8 +25,10 @@ $ terraform apply -lock=false
 ```
 
 Configure SSH agent forwarding via bastion node to VM instance in private subnet   
+
 PEM key can be found in terraform state file in S3 bucket   
-Bastion node public IP and VM instance private IP will be in terraform output   
+
+Bastion node public IP and VM instance private IP will be in terraform output
 ```sh
 $ ssh-add -k <PEM_FILE_NAME>
 $ ssh-add -L
@@ -47,7 +50,7 @@ $ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docke
 $ sudo chmod +x /usr/local/bin/docker-compose
 ``` 
 
-Start Prometheus with customized yml and below containers by docker-compose   
+Start Prometheus with customized yml and below containers by docker-compose
 ```sh
 $ cd docker
 $ docker-compose up -d
@@ -59,11 +62,13 @@ $ docker-compose up -d
 ## How to monitor the healthiness of nginx container
 
 In Prometheus, `nginx_up{instance="nginx-exporter:9113", job="nginx"} > 0` will return `1` if Nginx container runs OK    
-Can configure alert rule with furhter notification if Nginx instance down detected   
+
+Can configure alert rule with furhter notification if Nginx instance down detected
 
 ## How to log the resource usage of the container every 10 seconds
 In cAdvisor, watch the CPU and Memory usage metrics, Filesystem usage amount & ratios, also Network throughput of different Interfaces   
-Can also manually run docker stats to track a specific container resource usage from command line   
+
+Can also manually run docker stats to track a specific container resource usage from command line
 ```sh
 $ docker ps
 $ docker stats <CONTAINER_ID>
@@ -74,7 +79,7 @@ $ docker stats <CONTAINER_ID>
 $ cd python
 $ python3 check_word_frequency.py
 ```
-Expected return value   
+Expected return value
 ```sh
 ('to', 3), ('is', 3), ('Welcome', 2), ('nginx!', 2), ('you', 2), ('and', 2), ('support', 2), ('If', 1), ('see', 1), ('this', 1), ('page,', 1), ('the', 1), ('nginx', 1), ('web', 1), ('server', 1), ('successfully', 1), ('installed', 1), ('working.', 1), ('Further', 1), ('configuration', 1), ('required.', 1), ('For', 1), ('online', 1), ('documentation', 1), ('please', 1), ('refer', 1), ('nginx.org.', 1), ('Commercial', 1), ('available', 1), ('at', 1), ('nginx.com.', 1), ('Thank', 1), ('for', 1), ('using', 1), ('nginx.', 1)]
 ```
