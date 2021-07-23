@@ -58,6 +58,12 @@ $ docker run \
     -nginx.scrape-uri=http://PRIVATE_IP_VM_INSTANCE/nginx-health
 ```
 
+Add config into `docker/daemon.json` to `/etc/docker/daemon.json` on VM instance EC2   
+Then restart docker daemon
+```sh
+$ sudo service docker restart
+```
+
 Start Prometheus using customized config yml file in docker swarm   
 ```sh
 $ docker swarm init
@@ -66,7 +72,5 @@ $ docker service create --replicas 1 --name my-prometheus \
     --publish published=9090,target=9090,protocol=tcp \
     prom/prometheus
 ```
-
-Add config in `docker/daemon.json` to `/etc/docker/daemon.json` on VM instance EC2   
 
 Thus the healthiness of Nginx container and the resource usage of all containers could be detected by Prometheus.   
