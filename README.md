@@ -40,3 +40,11 @@ $ sudo service docker start
 $ sudo chkconfig docker on
 $ sudo usermod -a -G docker ec2-user
 ```
+Start an Nginx container on VM instance and expose port 80 with default page and stub_status at /nginx-health   
+```sh
+docker run \
+--name my-nginx \
+-p 80:80 \
+-v ${PWD}/docker/nginx-default.conf:/etc/nginx/conf.d/default.conf:ro \
+-d nginx
+```
