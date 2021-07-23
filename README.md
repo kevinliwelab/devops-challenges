@@ -45,24 +45,21 @@ Install docker-compose
 ```sh
 $ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 $ sudo chmod +x /usr/local/bin/docker-compose
-```
+``` 
 
-Nginx container exposes port 80 with default page and stub_status at `/nginx-health`   
-
-nginx-prometheus-exporter container exposes port 9113 for prometheus to scrape later   
-
-cAdvisor container exposes resource usage and performance data from running containers   
-
-Start Prometheus and above containers by docker-compose   
+Start Prometheus and below containers by docker-compose   
 ```sh
 $ cd docker
 $ docker-compose up -d
 ```
+  - Nginx container exposes port 80 with default page and stub_status at `/nginx-health`
+  - nginx-prometheus-exporter container exposes port 9113 for prometheus to scrape later
+  - cAdvisor container exposes resource usage and performance data from running containers
 
 ## How to monitor the healthiness of nginx container
 
 In Prometheus, `nginx_up{instance="nginx-exporter:9113", job="nginx"} > 0` will return `1` if Nginx container runs OK    
-Can configure alert rule with furhter notification for if Nginx down detected   
+Can configure alert rule with furhter notification if Nginx instance down detected   
 
 ## How to log the resource usage of the container every 10 seconds
 In cAdvisor, watch the CPU and Memory usage metrics, Filesystem usage amount & ratios, also Network throughput of different Interfaces   
