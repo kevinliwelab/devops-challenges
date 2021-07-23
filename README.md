@@ -42,9 +42,28 @@ $ sudo usermod -a -G docker ec2-user
 ```
 Start an Nginx container on VM instance and expose port 80 with default page and stub_status at /nginx-health   
 ```sh
-docker run \
---name my-nginx \
--p 80:80 \
--v ${PWD}/docker/nginx-default.conf:/etc/nginx/conf.d/default.conf:ro \
--d nginx
+$ docker run \
+    --name my-nginx \
+    -p 80:80 \
+    -v ${PWD}/docker/nginx-default.conf:/etc/nginx/conf.d/default.conf:ro \
+    -d nginx
 ```
+
+Start nginx-prometheus-exporter container on VM instance and expose port 9113 for prometheus to scrape later   
+```sh
+$ docker run \
+    --name my-nginx-exporter \
+    -p 9113:9113 \
+    -d nginx/nginx-prometheus-exporter:0.9.0 \
+    -nginx.scrape-uri=http://PRIVATE_IP_VM_INSTANCE/nginx-health
+```
+
+Start Prometheus using customized config yml file in docker swarm   
+```sh
+$ docker swarm init
+$ docker service create --replicas 1 --name my-prometheus \
+    --mount type=bind,source=${PWD}/docker/prometheus.yml,destination=/etc/prometheus/prometheus.yml \
+    --publish published=9090,target=9090,protocol=tcp \
+    prom/prometheus
+```
+
