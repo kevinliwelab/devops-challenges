@@ -40,37 +40,34 @@ $ sudo service docker start
 $ sudo chkconfig docker on
 $ sudo usermod -a -G docker ec2-user
 ```
-Start an Nginx container on VM instance and expose port 80 with default page and stub_status at `/nginx-health`   
+
+Install docker-compose
 ```sh
-$ docker run \
-    --name my-nginx \
-    -p 80:80 \
-    -v ${PWD}/docker/nginx-default.conf:/etc/nginx/conf.d/default.conf:ro \
-    -d nginx
+$ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+$ sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-Start nginx-prometheus-exporter container on VM instance and expose port 9113 for prometheus to scrape later   
+Nginx container exposes port 80 with default page and stub_status at `/nginx-health`   
+
+nginx-prometheus-exporter container exposes port 9113 for prometheus to scrape later   
+
+cAdvisor container exposes resource usage and performance data from running containers   
+
+Start Prometheus and above containers by docker-compose   
 ```sh
-$ docker run \
-    --name my-nginx-exporter \
-    -p 9113:9113 \
-    -d nginx/nginx-prometheus-exporter:0.9.0 \
-    -nginx.scrape-uri=http://PRIVATE_IP_VM_INSTANCE/nginx-health
+$ cd docker
+$ docker-compose up -d
 ```
 
-Add config into `docker/daemon.json` to `/etc/docker/daemon.json` on VM instance EC2   
-Then restart docker daemon
-```sh
-$ sudo service docker restart
-```
+## How to monitor the healthiness of nginx container
 
-Start Prometheus using customized config yml file in docker swarm   
-```sh
-$ docker swarm init
-$ docker service create --replicas 1 --name my-prometheus \
-    --mount type=bind,source=${PWD}/docker/prometheus.yml,destination=/etc/prometheus/prometheus.yml \
-    --publish published=9090,target=9090,protocol=tcp \
-    prom/prometheus
-```
+In Prometheus, `nginx_up{instance="nginx-exporter:9113", job="nginx"} > 0` will return `1` if Nginx container runs OK    
+Can configure alert rule with furhter notification for if Nginx down detected   
 
-Thus the healthiness of Nginx container and the resource usage of all containers could be detected by Prometheus.   
+## How to log the resource usage of the container every 10 seconds
+In cAdvisor, watch the CPU and Memory usage metrics, Filesystem usage amount & ratios, also Network throughput of different Interfaces   
+Can also manually run docker stats to track a specific container resource usage from command line   
+```sh
+$ docker ps
+$ docker stats <CONTAINER_ID>
+```
