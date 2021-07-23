@@ -1,6 +1,14 @@
 resource "aws_security_group" "devops-challenge-vm-sg" {
   name   = "devops-challenge-vm-sg"
   vpc_id = module.vpc.vpc_id
+  
+  ingress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = []
+    self        = true
+  }
 
   ingress {
     protocol    = "tcp"

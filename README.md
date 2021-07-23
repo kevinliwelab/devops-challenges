@@ -40,7 +40,7 @@ $ sudo service docker start
 $ sudo chkconfig docker on
 $ sudo usermod -a -G docker ec2-user
 ```
-Start an Nginx container on VM instance and expose port 80 with default page and stub_status at /nginx-health   
+Start an Nginx container on VM instance and expose port 80 with default page and stub_status at `/nginx-health`   
 ```sh
 $ docker run \
     --name my-nginx \
@@ -67,3 +67,6 @@ $ docker service create --replicas 1 --name my-prometheus \
     prom/prometheus
 ```
 
+Add config in `docker/daemon.json` to `/etc/docker/daemon.json` on VM instance EC2   
+
+Thus the healthiness of Nginx container and the resource usage of all containers could be detected by Prometheus.   
