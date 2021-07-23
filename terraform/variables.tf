@@ -5,3 +5,7 @@ variable "aws_region" {
 variable "key_name" {
   default = "devops-challenge"
 }
+
+variable "self_public_ip" {
+  default = "115.160.150.58"
+}

@@ -21,7 +21,7 @@ resource "aws_security_group" "devops-challenge-bastion-sg" {
     protocol    = "tcp"
     from_port   = 22
     to_port     = 22
-    cidr_blocks = ["115.160.150.58/32"] # replace with your own public IP
+    cidr_blocks = ["${var.self_public_ip}/32"] # replace with your own public IP
   }
 
   egress {
