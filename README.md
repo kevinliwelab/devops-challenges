@@ -47,14 +47,14 @@ $ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docke
 $ sudo chmod +x /usr/local/bin/docker-compose
 ``` 
 
-Start Prometheus and below containers by docker-compose   
+Start Prometheus with customized yml and below containers by docker-compose   
 ```sh
 $ cd docker
 $ docker-compose up -d
 ```
   - Nginx container exposes port 80 with default page and stub_status at `/nginx-health`
   - nginx-prometheus-exporter container exposes port 9113 for prometheus to scrape later
-  - cAdvisor container exposes resource usage and performance data from running containers
+  - cAdvisor container exposes port 8080 with resource usage and performance data from running containers
 
 ## How to monitor the healthiness of nginx container
 
@@ -68,3 +68,15 @@ Can also manually run docker stats to track a specific container resource usage 
 $ docker ps
 $ docker stats <CONTAINER_ID>
 ```
+
+## How to check word frequency count on Nginx default page
+```sh
+$ cd python
+$ python3 check_word_frequency.py
+```
+Expected return value   
+```sh
+('to', 3), ('is', 3), ('Welcome', 2), ('nginx!', 2), ('you', 2), ('and', 2), ('support', 2), ('If', 1), ('see', 1), ('this', 1), ('page,', 1), ('the', 1), ('nginx', 1), ('web', 1), ('server', 1), ('successfully', 1), ('installed', 1), ('working.', 1), ('Further', 1), ('configuration', 1), ('required.', 1), ('For', 1), ('online', 1), ('documentation', 1), ('please', 1), ('refer', 1), ('nginx.org.', 1), ('Commercial', 1), ('available', 1), ('at', 1), ('nginx.com.', 1), ('Thank', 1), ('for', 1), ('using', 1), ('nginx.', 1)]
+```
+
+### Thanks for your reading!
