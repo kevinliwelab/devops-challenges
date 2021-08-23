@@ -6,11 +6,11 @@ module "nlb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "~> 6.0"
 
-  name                = "devops-challenge-nlb"
-  internal            = false
-  load_balancer_type  = "network"
-  vpc_id              = module.vpc.vpc_id
-  subnets             = tolist(data.aws_subnet_ids.all.ids)
+  name               = "devops-challenge-nlb"
+  internal           = false
+  load_balancer_type = "network"
+  vpc_id             = module.vpc.vpc_id
+  subnets            = tolist(data.aws_subnet_ids.all.ids)
 
   target_groups = [
     {
@@ -19,18 +19,18 @@ module "nlb" {
       backend_port     = 80
       target_type      = "ip"
       health_check = {
-        enabled              = true
-        interval             = 30
-        path                 = "/nginx-health"
-        port                 = "traffic-port"
-        healthy_threshold    = 3
-        unhealthy_threshold  = 3
-        timeout              = 6
+        enabled             = true
+        interval            = 30
+        path                = "/nginx-health"
+        port                = "traffic-port"
+        healthy_threshold   = 3
+        unhealthy_threshold = 3
+        timeout             = 6
       }
       targets = [
         {
           target_id = module.bastion_instance.id[0]
-          port = 80
+          port      = 80
         }
       ]
     },
@@ -42,7 +42,7 @@ module "nlb" {
       targets = [
         {
           target_id = module.vm_instance.id[0]
-          port = 9090
+          port      = 9090
         }
       ]
     }
